@@ -7,6 +7,8 @@ birth_year = int(input('Enter your birth year: '))
 age = current_year - birth_year
 if current_month < birth_month:
     age = age - 1
+elif current_month == birth_month and current_day < birth_day:
+    age = age - 1
 
 print('**Birthday Calculator**')
 print('-Current day-')
@@ -20,4 +22,4 @@ print('Year: ', birth_year)
 print('You are ', age, 'years old.')
 
 if current_month == birth_month and current_day == birth_day:
-    print('Happy birthday!')
+    print('*+-+*Happy birthday!*+-+*')

@@ -8,15 +8,15 @@ age = current_year - birth_year
 if current_month < birth_month:
     age = age - 1
 
-print('Birthday Calculator')
-print('Current day:')
+print('**Birthday Calculator**')
+print('-Current day-')
 print('Month: ', current_month)
 print('Day: ', current_day)
 print('Year: ', current_year)
-print('Birthday:')
+print('-Birthday-')
 print('Month: ', birth_month)
 print('Day: ', birth_day)
-print('Year:    ', birth_year)
+print('Year: ', birth_year)
 print('You are ', age, 'years old.')
 
 if current_month == birth_month and current_day == birth_day:

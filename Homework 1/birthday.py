@@ -15,4 +15,5 @@ print('Month: ', birth_month)
 print('Day: ', birth_day)
 print('Year:    ', birth_year)
 
-print('lol')
+if current_month == birth_month and current_day == birth_day:
+    print('Happy Birthday!')

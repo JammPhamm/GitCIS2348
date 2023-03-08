@@ -8,4 +8,4 @@ word = word.replace('o','.')
 
 word = word + 'q*s'
 
-print(word)
+print(word)s

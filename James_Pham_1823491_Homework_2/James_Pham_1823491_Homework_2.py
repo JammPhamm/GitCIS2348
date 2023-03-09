@@ -1,15 +1,15 @@
 import datetime
+
 # Create a dictionary to store month name as key and month number as value
 month_dict = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5,
               'June': 6, 'July': 7, 'August': 8, 'September': 9, 'October': 10,
               'November': 11, 'December': 12}
 
-now = datetime.datetime.now()
-currentdate = now.strftime("%m/%d/%Y")
+today = datetime.datetime.now()
+currentYear = today.strftime("%Y")
 
 # Try to open file 
 try:
-
 
     # Open inputDates.txt file to read the dates
     with open('inputDates.txt', 'r') as file:
@@ -45,8 +45,9 @@ try:
                 # Find the month number from month dictionary
                 monthNum = month_dict[month]
 
-
+                # remove date if year is > current year
                 print(str(monthNum) + '/' + day + '/' + year)
+
 
 
 # If file can't open 

@@ -11,6 +11,9 @@ currentYear = today.strftime("%Y")
 # Try to open file 
 try:
 
+    # Open parsedDates.txt file to write the parsed dates
+    outFile = open('parsedDates.txt', 'w')
+
     # Open inputDates.txt file to read the dates
     with open('inputDates.txt', 'r') as file:
 
@@ -46,7 +49,7 @@ try:
                 monthNum = month_dict[month]
 
                 # remove date if year is > current year
-                print(str(monthNum) + '/' + day + '/' + year)
+                outFile.write(str(monthNum) + '/' + day + '/' + year + '\n')
 
 
 

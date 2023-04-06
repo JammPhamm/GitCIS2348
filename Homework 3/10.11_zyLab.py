@@ -18,3 +18,24 @@ class FoodItem:
         print('   Protein: {:.2f} g'.format(self.protein))
 
 
+if __name__ == "__main__":
+    food_item1 = FoodItem()
+
+    item_name = input()
+    amount_fat = float(input())
+    amount_carbs = float(input())
+    amount_protein = float(input())
+
+    food_item2 = FoodItem(item_name, amount_fat, amount_carbs, amount_protein)
+
+    num_servings = float(input())
+
+    food_item1.print_info()
+    print(
+        'Number of calories for {:.2f} serving(s): {:.2f}'.format(num_servings, food_item1.get_calories(num_servings)))
+
+    print()
+
+    food_item2.print_info()
+    print(
+        'Number of calories for {:.2f} serving(s): {:.2f}'.format(num_servings, food_item2.get_calories(num_servings)))

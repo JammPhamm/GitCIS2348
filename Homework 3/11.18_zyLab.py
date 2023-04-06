@@ -1,3 +1,4 @@
+#Pham, James 11.18 zyLab
 user_input = input()
 
 my_list = [int(i) for i in user_input.split() if (int(i)>=0)]

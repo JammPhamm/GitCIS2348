@@ -21,6 +21,6 @@ if __name__ == "__main__":
     team.team_losses = team_losses
 
     if team.get_win_percentage() >= 0.5:
-        print('Congradualations, Team,' team.team_name, 'has a winning average!')
+        print('Congradualations, Team', team.team_name, 'has a winning average!')
     else:
         print('Team', team.team_name, 'has a losing average.')

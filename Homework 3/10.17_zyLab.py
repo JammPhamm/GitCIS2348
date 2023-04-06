@@ -25,13 +25,12 @@ if __name__ == "__main__":
     item1.item_name = input('Enter the item name:\n')
     item1.item_price = int(input('Enter the item price:\n'))
     item1.item_quantity = int(input('Enter the item quantity:\n'))
-    print()
     # for item 2
     print('\nItem 2')
     item2.item_name = input('Enter the item name:\n')
     item2.item_price = int(input('Enter the item price:\n'))
     item2.item_quantity = int(input('Enter the item quantity:\n'))
-
+    print()
     # print the costs
     print('TOTAL COST')
     # call the method and print the cost

@@ -1,3 +1,4 @@
+#Pham, James 11.22 zyLab
 # Input words
 Words = input("")
 # Convert words to list of words

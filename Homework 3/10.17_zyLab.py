@@ -1,3 +1,4 @@
+#Pham, James 10.17 zyLab
 # ItemToPurchase class
 class ItemToPurchase:
     # constructor + 3 attributes

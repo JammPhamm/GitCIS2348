@@ -1,4 +1,4 @@
-#Pham, James 10.19 zyLab
+# Pham, James 10.19 zyLab
 # ItemToPurchase class
 class ItemToPurchase:
     # constructor + 3 attributes
@@ -18,6 +18,7 @@ class ItemToPurchase:
     def print_item_description(self):
         print('{}:  {}'.format(self.item_name, self.print_item_description))
 
+
 # main()
 # driver code
 class ShoppingCart:
@@ -25,3 +26,6 @@ class ShoppingCart:
         self.customer_name = "none"
         self.current_date = "January 1, 2016"
         self.cart_items = list()
+
+    def add_item(self):
+        

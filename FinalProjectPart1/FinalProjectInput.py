@@ -45,3 +45,21 @@ with open('FullInventory.csv', 'w', newline='') as file:
         writer.writerow(
             [item[0], item[1]['manufacturer'], item[1]['item_type'], item[1]['price'], item[1]['service_date'],
              item[1]['damaged']])
+
+
+# Sort merged data by item_id
+def get_itemID(item):
+    return item[0]
+
+
+sorted_data = sorted(merged_data.items(), key=get_itemID)
+
+# Create separate CSV files based on item_type
+for item_type in set([x[1]['item_type'] for x in sorted_data]):
+    filename = f"{item_type.capitalize()}Inventory.csv"
+    with open(filename, 'w', newline='') as file:
+        writer = csv.writer(file)
+        for item in sorted_data:
+            if item[1]['item_type'] == item_type:
+                row = [item[0], item[1]['manufacturer'], item[1]['price'], item[1]['service_date'], item[1]['damaged']]
+                writer.writerow(row)

@@ -17,3 +17,4 @@ if __name__ == "__main__":
     except ValueError as e:
         print(e)
         print("Could not calculate heart rate info.")
+        print()

@@ -1,5 +1,6 @@
 # Pham, James 1823491 Final Project Part 1
 import csv
+from datetime import date
 
 merged_data = {}
 
@@ -63,3 +64,47 @@ for item_type in set([x[1]['item_type'] for x in sorted_data]):
             if item[1]['item_type'] == item_type:
                 row = [item[0], item[1]['manufacturer'], item[1]['price'], item[1]['service_date'], item[1]['damaged']]
                 writer.writerow(row)
+
+# Get the current date
+today = date.today()
+
+# Extract items with service date in the past
+past_service_date_items = []
+for item_id, item_data in merged_data.items():
+    if 'service_date' in item_data:
+        service_date_str = item_data['service_date']
+        service_date_parts = service_date_str.split('/')
+        service_date = date(int(service_date_parts[2]), int(service_date_parts[0]), int(service_date_parts[1]))
+        if service_date < today:
+            item_data['service_date'] = service_date.strftime('%m/%d/%Y')
+            past_service_date_items.append((item_id, item_data))
+
+
+# Sort items by service date
+def get_service_date(item):
+    return item[1]['service_date']
+
+sorted_data = sorted(past_service_date_items, key=get_service_date)
+
+# Write data to CSV file
+with open('PastServiceDateInventory.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    for i, item_data in enumerate(sorted_data):
+        item_id = sorted_data[i][0]
+        writer.writerow([item_id, item_data[1]['manufacturer'], item_data[1]['item_type'], item_data[1]['price'],
+                         item_data[1]['service_date'], item_data[1]['damaged']])
+
+# Define a function to get the price
+def get_price(item):
+    return float(item[1]['price'])
+
+# Sort merged data by price
+sorted_data = sorted(merged_data.items(), key=get_price, reverse=True)
+
+# Write sorted data to a new CSV file
+with open('DamagedInventory.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    for item in sorted_data:
+        if item[1]['damaged'] == 'damaged':
+            writer.writerow(
+                [item[0], item[1]['manufacturer'], item[1]['item_type'], item[1]['price'], item[1]['service_date'], item[1]['damaged']])

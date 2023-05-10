@@ -1,62 +1,56 @@
 import csv
 from datetime import date
 
-# Read and merge data from CSV files
+# Read data from CSV files
 merged_data = {}
-for filename in ['ManufacturerList.csv', 'PriceList.csv', 'ServiceDatesList.csv']:
-    with open(filename, 'r') as file:
-        reader = csv.reader(file)
-        for line in reader:
-            item_id = line[0]
-            item_data = merged_data.setdefault(item_id, {})
-            if filename == 'ManufacturerList.csv':
-                item_data['manufacturer'] = line[1]
-                item_data['item_type'] = line[2]
-                item_data['damaged'] = line[3]
-            elif filename == 'PriceList.csv':
-                item_data['price'] = float(line[1])
-            elif filename == 'ServiceDatesList.csv':
-                item_data['service_date'] = date.fromisoformat(line[1])
+with open('FullInventory.csv', 'r') as file:
+    reader = csv.reader(file)
+    next(reader) # skip header
+    for item_id, manufacturer, item_type, price, service_date, damaged in reader:
+        merged_data[item_id] = {
+            'manufacturer': manufacturer,
+            'item_type': item_type,
+            'price': float(price),
+            'service_date': date.fromisoformat(service_date),
+            'damaged': damaged == 'damaged',
+        }
 
+# Group items by item type
+items_by_type = {}
+for item in merged_data.values():
+    if not item['damaged'] and item['service_date'] >= date.today():
+        item_type = item['item_type']
+        if item_type not in items_by_type:
+            items_by_type[item_type] = []
+        items_by_type[item_type].append(item)
 
-# Define a function to get the most expensive item by item type and manufacturer
-def get_most_expensive_item(item_type, manufacturer):
-    items = [(item_id, item_data) for item_id, item_data in merged_data.items()
-             if item_data['item_type'] == item_type and item_data['manufacturer'] == manufacturer
-             and 'damaged' not in item_data and 'service_date' not in item_data]
-    if not items:
-        return None
-    most_expensive_item = max(items, key=lambda x: x[1]['price'])
-    return most_expensive_item
+# Print items in inventory
+print(merged_data)
 
-
-# Loop to query user input
+# Interactive inventory query capability
 while True:
-    # Get manufacturer and item type from user
-    input_str = input("Enter manufacturer and item type separated by a space (or 'q' to quit): ")
-    if input_str.lower() == 'q':
+    query = input("Enter manufacturer and item type (e.g. Apple computer): ")
+    if query == 'q':
         break
-    input_parts = input_str.strip().split()
-    if len(input_parts) != 2:
-        print("Invalid input. Please enter manufacturer and item type separated by a space.")
-        continue
-    manufacturer, item_type = input_parts
 
-    # Get most expensive item and similar item from another manufacturer
-    most_expensive_item = get_most_expensive_item(item_type, manufacturer)
-    if most_expensive_item is None:
-        print("No such item in inventory.")
-        continue
-    similar_item = None
-    for item_id, item_data in merged_data.items():
-        if item_data['item_type'] == item_type and item_data['manufacturer'] != manufacturer \
-                and 'damaged' not in item_data and 'service_date' not in item_data:
-            if similar_item is None or abs(item_data['price'] - most_expensive_item[1]['price']) < \
-                    abs(similar_item[1]['price'] - most_expensive_item[1]['price']):
-                similar_item = (item_id, item_data)
+    manufacturer, item_type = query.strip().split(' ', 1)
+    candidate_items = [item for item in items_by_type.get(item_type, [])
+                       if item['manufacturer'].lower() == manufacturer.lower()]
 
-    # Print output
-    print("Your item is:", most_expensive_item[0], manufacturer, item_type, most_expensive_item[1]['price'])
-    if similar_item is not None:
-        print("You may also consider:", similar_item[0], similar_item[1]['manufacturer'], item_type,
-              similar_item[1]['price'])
+    if not candidate_items:
+        print("No such item in inventory")
+    elif len(candidate_items) > 1:
+        print("More than one item matches the query")
+    else:
+        item = candidate_items[0]
+        print(f"Your item is: {item['item_id']}, {item['manufacturer']}, {item['item_type']}, {item['price']}")
+        closest_item = None
+        closest_price_diff = float('inf')
+        for other_item in items_by_type.get(item_type, []):
+            if other_item is not item and not other_item['damaged'] and other_item['service_date'] >= date.today():
+                price_diff = abs(item['price'] - other_item['price'])
+                if price_diff < closest_price_diff:
+                    closest_item = other_item
+                    closest_price_diff = price_diff
+        if closest_item is not None:
+            print(f"You may also consider: {closest_item['manufacturer']}, {closest_item['item_type']}, {closest_item['price']}")

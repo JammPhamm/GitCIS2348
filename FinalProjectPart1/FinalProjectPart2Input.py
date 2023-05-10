@@ -27,9 +27,6 @@ for item in merged_data.values():
             items_by_type[item_type] = []
         items_by_type[item_type].append(item)
 
-# Print items in inventory
-print(merged_data)
-
 # Interactive inventory query capability
 while True:
     query = input("Enter manufacturer and item type (e.g. Apple computer): ")
